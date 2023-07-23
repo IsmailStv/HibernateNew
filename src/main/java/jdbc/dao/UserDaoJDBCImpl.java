@@ -1,0 +1,32 @@
+package jdbc.dao;
+
+import jdbc.model.User;
+import jdbc.util.Util;
+
+import java.util.List;
+
+public class UserDaoJDBCImpl implements UserDao {
+
+    public UserDaoJDBCImpl() {
+
+    }
+
+    public void createUsersTable() {
+    }
+
+    public void dropUsersTable() {
+    }
+
+    public void saveUser(String name, String lastName, byte age) {
+    }
+
+    public void removeUserById(long id) {
+    }
+
+    public List<User> getAllUsers() {
+        return null;
+    }
+
+    public void cleanUsersTable() {
+    }
+}
