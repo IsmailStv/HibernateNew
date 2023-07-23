@@ -1,7 +1,7 @@
 package jdbc;
 
-import jm.task.core.jdbc.service.UserService;
-import jm.task.core.jdbc.service.UserServiceImpl;
+import jdbc.service.UserService;
+import jdbc.service.UserServiceImpl;
 
 public class Main {
     private final static UserService userService = new UserServiceImpl();
