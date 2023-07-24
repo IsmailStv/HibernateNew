@@ -1,60 +1,43 @@
 package jdbc.util;
 
 import jdbc.model.User;
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.service.ServiceRegistry;
 
 public class Util {
-    private static Util instance = null;
-    private static SessionFactory sessionFactory;
-    private static Metadata metadata;
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private static final String HOST = "jdbc:mysql://localhost:3306/taskjdbc?useSSL=false&allowMultiQueries=true&serverTimezone=UTC";
+    private static final String LOGIN = "root";
+    private static final String PASSWORD = "753421Qq2211";
+    private static SessionFactory sessionFactory = null;
 
-    public static Util getInstance() {
-        if (null == instance) {
-            instance = new Util();
-        }
-        return instance;
-    }
+    public static SessionFactory getConnection() {
 
-    private Util() {
-        if (null == sessionFactory) {
+        try {
+            Configuration configuration = new Configuration()
+                    .setProperty("hibernate.connection.driver_class", DRIVER)
+                    .setProperty("hibernate.connection.url", HOST)
+                    .setProperty("hibernate.connection.username", LOGIN)
+                    .setProperty("hibernate.connection.password", PASSWORD)
+                    .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+                    .addAnnotatedClass(User.class)
+                    .setProperty("hibernate.c3p0.min_size","5")
+                    .setProperty("hibernate.c3p0.max_size","200")
+                    .setProperty("hibernate.c3p0.max_statements","200");
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                    .applySetting(Environment.USE_SQL_COMMENTS, false)
-                    .applySetting(Environment.SHOW_SQL, true)
-                    .applySetting(Environment.HBM2DDL_AUTO, "update") //update create-drop none
-                    .build();
-            sessionFactory = makeSessionFactory(serviceRegistry);
+                    .applySettings(configuration.getProperties()).build();
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        } catch (HibernateException e) {
+            e.printStackTrace();
         }
-    }
-
-    public SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    private static SessionFactory makeSessionFactory(ServiceRegistry serviceRegistry) {
-        metadata = new MetadataSources(serviceRegistry)
-                .addAnnotatedClass(User.class)
-                .getMetadataBuilder()
-                .build();
-        return metadata.buildSessionFactory();
-    }
-
-    public String getTableName(String entityName) throws NullPointerException {
-        if (null == metadata) {
-            throw new NullPointerException("Metadata is null");
-        }
-
-        for (PersistentClass persistentClass : Util.metadata.getEntityBindings()) {
-            if (entityName.equals(persistentClass.getJpaEntityName())) {
-                return persistentClass.getTable().getName();
-            }
-        }
-
-        throw new NullPointerException(String.format("Entity {%s} not found", entityName));
     }
 }
