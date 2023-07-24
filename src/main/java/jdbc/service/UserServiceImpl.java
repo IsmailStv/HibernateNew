@@ -1,6 +1,5 @@
 package jdbc.service;
 
-import jdbc.dao.UserDao;
 import jdbc.dao.UserDaoHibernateImpl;
 import jdbc.model.User;
 

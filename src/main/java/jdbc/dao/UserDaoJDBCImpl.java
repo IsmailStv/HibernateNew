@@ -5,7 +5,7 @@ import jdbc.util.Util;
 
 import java.util.List;
 
-public class UserDaoJDBCImpl implements UserDao {
+public class UserDaoJDBCImpl extends Util implements UserDao {
 
     public UserDaoJDBCImpl() {
 
