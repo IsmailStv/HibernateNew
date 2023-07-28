@@ -26,19 +26,20 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("Table is created");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
     @Override
     public void dropUsersTable() {
         Util ut = new Util();
+        Transaction tx = null;
         try (Session session = ut.getSessionFactory().openSession()) {
             session.beginTransaction();
             session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate();
             session.getTransaction().commit();
             System.out.println("Table is deleted");
         } catch (Exception e) {
-            e.printStackTrace();
+            tx.rollback();
         }
     }
     @Override
@@ -52,20 +53,22 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("User named " + name + " added in table");
         } catch (HibernateException e) {
-            e.printStackTrace();
             System.out.println(e);
+            tx.rollback();
         }
     }
     @Override
     public void removeUserById(long id) {
         User user = new User();
         Util ut = new Util();
+        Transaction tx = null;
         try (Session session = Util.getSessionFactory().openSession()) {
-            session.beginTransaction();
+            tx = session.beginTransaction();
             session.createQuery("delete User where id = :userId").setParameter("userId", id).executeUpdate();
             session.getTransaction().commit();
             System.out.println("объект был удален по id");
         } catch (Exception e) {
+            tx.rollback();
             System.out.println("Object was not deleted by id");
         }
     }
@@ -86,12 +89,14 @@ public class UserDaoHibernateImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         Util ut = new Util();
+        Transaction tx = null;
         try (Session session = Util.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
+            tx = session.beginTransaction();
             session.createQuery("delete from User").executeUpdate();
             session.getTransaction().commit();
             System.out.println("Table is cleaned");
         } catch (Exception e) {
+            tx.rollback();
             System.out.println("Table was not cleaned");
             e.printStackTrace();
         }
