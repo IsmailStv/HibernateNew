@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Util {
     private static final String URL = "jdbc:mysql://localhost:3306/taskjdbc?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT&allowPublicKeyRetrieval=true&useSSL=false&zeroDateTimeBehavior=convertToNull";
     private static final String USER = "root";
-    private static final String PASSWORD = "753421Qq2211";
+    private static final String PASSWORD = "mypass";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DIALECT = "org.hibernate.dialect.MySQLDialect";
     private static SessionFactory sessionFactory;

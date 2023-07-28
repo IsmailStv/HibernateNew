@@ -1,6 +1,12 @@
 package jdbc.model;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "users")
@@ -13,7 +19,7 @@ public class User {
     @Column
     private String name;
 
-    @Column
+    @Column(name = "last_name")
     private String lastName;
 
     @Column
