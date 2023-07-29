@@ -26,7 +26,6 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("Table is created");
         } catch (Exception e) {
-            tx.rollback();
             System.out.println(e);
         }
     }
@@ -40,7 +39,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("Table is deleted");
         } catch (Exception e) {
-            tx.rollback();
+            System.out.println(e);
         }
     }
     @Override
@@ -54,6 +53,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("User named " + name + " added in table");
         } catch (HibernateException e) {
+            tx.rollback();
             System.out.println(e);
         }
     }
@@ -68,6 +68,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("объект был удален по id");
         } catch (Exception e) {
+            tx.rollback();
             System.out.println("Object was not deleted by id");
         }
     }
@@ -95,6 +96,7 @@ public class UserDaoHibernateImpl implements UserDao {
             session.getTransaction().commit();
             System.out.println("Table is cleaned");
         } catch (Exception e) {
+            tx.rollback();
             System.out.println("Table was not cleaned");
             e.printStackTrace();
         }
